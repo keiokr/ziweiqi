@@ -6,4 +6,5 @@
 2、使用的时候需要配置fofa_key 和  aiqicha_cookie 
 <img width="1578" height="1139" alt="2" src="https://github.com/user-attachments/assets/6d27a72f-77ac-4560-a24f-26ec17b20eb6" />
 3、每次进行资产收集的时候会对上次的结果进行备份和清理。
+<img width="1575" height="1136" alt="image" src="https://github.com/user-attachments/assets/2b277656-da32-4b77-b223-7d3f6f693423" />
 
