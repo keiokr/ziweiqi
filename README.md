@@ -24,7 +24,14 @@
 5.2：每次进行资产收集的时候会对上次的结果进行备份和清理。<br>
 <br>
 <img width="1575" height="1136" alt="image" src="https://github.com/user-attachments/assets/2b277656-da32-4b77-b223-7d3f6f693423" />
-<br><br><br>
+<br>
+5.3： 工信部批量查询备案资产，批量查询除开aiqicha也可以使用 工信部的ziweiqi/tools/ICP_Query/icpApi.py,大批量会封，已经做了二开，批量尽量不要超过99个。
+<br>
+<img width="1596" height="1085" alt="image" src="https://github.com/user-attachments/assets/82e9c5dc-723a-4c13-8741-5ebb044d5542" />
+<br>
+5.4 enscan做了二开资产最好不要超过200个，aiqicha会封，fofa也做了访问速率控制，速度慢了都是因为防止接口访问降低频率不被封。
+<br>
+<br>
 
 
 
