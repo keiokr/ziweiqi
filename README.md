@@ -29,7 +29,7 @@
 <br>
 <img width="1596" height="1085" alt="image" src="https://github.com/user-attachments/assets/82e9c5dc-723a-4c13-8741-5ebb044d5542" />
 <br>
-5.4 enscan做了二开资产最好不要超过200个，aiqicha会封，fofa也做了访问速率控制，速度慢了都是因为防止接口访问降低频率不被封。
+5.4 enscan做了二开资产最好不要超过200个，aiqicha会封，fofa也做了访问速率控制，速度放慢都是因为防止接口访问降低频率不被封。
 <br>
 <br>
 
