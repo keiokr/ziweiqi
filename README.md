@@ -7,6 +7,8 @@
 <br><br><br>
 3、运行环境：如果运行环境有困难可以考虑使用 Windows Server 2022 Datacenter + python 3.9.11 
 <br><br>
+环境安装：env 目录下一键安装点击 install_env.bat 
+<br><br>
 <img width="1539" height="176" alt="image" src="https://github.com/user-attachments/assets/2b55ee3a-681c-4cc1-8c37-e12ce39bd82f" />
 <br><br>
 4、使用方法<br>
