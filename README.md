@@ -1,5 +1,5 @@
 # ziweiqi
-一款自用的根据目标单位名称和备案域名ip进行资产信息收集工具，资产准确率99.9%
+一款根据目标单位名称和备案域名ip进行资产信息收集工具，资产准确率99.9%
 
 1、目标单位名称或备案域名ip，针对hvv进行资产收集用，fofa做了cn的过滤。
 <img width="1573" height="1140" alt="1" src="https://github.com/user-attachments/assets/6101c94d-b1bf-45cb-8c0a-9b078ff01064" />
