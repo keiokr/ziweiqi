@@ -25,7 +25,7 @@
 <br>
 <img width="1575" height="1136" alt="image" src="https://github.com/user-attachments/assets/2b277656-da32-4b77-b223-7d3f6f693423" />
 <br>
-5.3： 工信部批量查询备案资产，批量查询除开aiqicha也可以使用 工信部的ziweiqi/tools/ICP_Query/icpApi.py,大批量会封，已经做了二开，批量尽量不要超过99个。
+5.3： 工信部批量查询备案资产（没有集成到软件里面，但可以手动批量），批量查询除开aiqicha，也可以使用工信部的ziweiqi/tools/ICP_Query/icpApi.py,大批量会封，已经做了二开，批量尽量不要超过99个。
 <br>
 <img width="1596" height="1085" alt="image" src="https://github.com/user-attachments/assets/82e9c5dc-723a-4c13-8741-5ebb044d5542" />
 <br>
