@@ -17,11 +17,11 @@
 <br>
 5、补充<br>
 <br>
-目标单位名称或备案域名ip，针对hvv进行资产收集用，fofa做了cn的过滤，支持大批量目标。<br>
+5.1：目标单位名称或备案域名ip，针对hvv进行资产收集用，fofa做了cn的过滤，支持大批量目标。<br>
 <br>
 <img width="1573" height="1140" alt="1" src="https://github.com/user-attachments/assets/6101c94d-b1bf-45cb-8c0a-9b078ff01064" />
 <br>
-每次进行资产收集的时候会对上次的结果进行备份和清理。<br>
+5.2：每次进行资产收集的时候会对上次的结果进行备份和清理。<br>
 <br>
 <img width="1575" height="1136" alt="image" src="https://github.com/user-attachments/assets/2b277656-da32-4b77-b223-7d3f6f693423" />
 <br><br><br>
