@@ -70,6 +70,16 @@ def is_valid_ipv4(value: str) -> bool:
         return False
 
 
+def target_sort_key(value: str) -> tuple:
+    if is_valid_ipv4(value):
+        return (0, tuple(int(part) for part in value.split(".")))
+    return (1, value.lower())
+
+
+def sort_targets(targets: list[str]) -> list[str]:
+    return sorted(targets, key=target_sort_key)
+
+
 def is_valid_domain(value: str) -> bool:
     if not value or "." not in value or len(value) > 253:
         return False
@@ -292,7 +302,7 @@ def extract_targets_from_xlsx_file(xlsx_path: Path, company_file: Path, debug: b
 
 def write_targets(output_file: Path, targets: list[str]) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    output_file.write_text("\n".join(targets) + "\n", encoding="utf-8")
+    output_file.write_text("\n".join(sort_targets(targets)) + "\n", encoding="utf-8")
 
 
 def choose_file_dialog(title: str, initialdir: Path, filetypes):
@@ -372,7 +382,9 @@ def main():
         print(f"公司名单不存在: {company_path}")
         raise SystemExit(1)
 
-    targets = extract_targets_from_xlsx_file(xlsx_path, company_path, debug=args.debug)
+    targets = sort_targets(
+        extract_targets_from_xlsx_file(xlsx_path, company_path, debug=args.debug)
+    )
     if not targets:
         print("没有提取到任何根域名")
         print("建议检查：")
