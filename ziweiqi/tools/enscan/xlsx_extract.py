@@ -22,9 +22,29 @@ XLSX_PATTERNS = (
 
 INVISIBLE_CHARS = "\ufeff\u200b\u200c\u200d\u2060"
 DOMAIN_RE = re.compile(
-    r"(?<![@\w-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}(?![\w-])"
+    r"(?<![@\w-])(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+"
+    r"[A-Za-z]{2,63}(?![\w-])"
 )
+ASCII_DOMAIN_LABEL_RE = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?")
 IPV4_RE = re.compile(r"(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])")
+TARGET_HEADER_NAMES = {
+    "域名",
+    "根域名",
+    "主域名",
+    "domain",
+    "domains",
+    "rootdomain",
+    "rootdomains",
+}
+FALLBACK_HEADER_NAMES = {
+    "网址",
+    "网站",
+    "url",
+    "urls",
+    "链接",
+    "link",
+    "links",
+}
 
 
 def strip_invisible_edges(value) -> str:
@@ -50,8 +70,34 @@ def is_valid_ipv4(value: str) -> bool:
         return False
 
 
+def is_valid_domain(value: str) -> bool:
+    if not value or "." not in value or len(value) > 253:
+        return False
+    try:
+        value.encode("ascii")
+    except UnicodeEncodeError:
+        return False
+
+    labels = value.rstrip(".").split(".")
+    if len(labels) < 2 or any(not label for label in labels):
+        return False
+
+    ascii_labels = []
+    for label in labels:
+        ascii_label = label.lower()
+        if len(ascii_label) > 63 or not ASCII_DOMAIN_LABEL_RE.fullmatch(ascii_label):
+            return False
+        ascii_labels.append(ascii_label)
+
+    tld = ascii_labels[-1]
+    if not (re.fullmatch(r"[a-z]{2,63}", tld) or tld.startswith("xn--")):
+        return False
+
+    return True
+
+
 def normalize_target(value: str) -> str | None:
-    candidate = strip_invisible_edges(value).strip("\"'[](){}<>;,")
+    candidate = strip_invisible_edges(value).strip("\"'[](){}<>;,，。；、")
     if not candidate:
         return None
     if "://" in candidate:
@@ -68,7 +114,7 @@ def normalize_target(value: str) -> str | None:
         return None
     if is_valid_ipv4(candidate):
         return candidate
-    if DOMAIN_RE.fullmatch(candidate):
+    if is_valid_domain(candidate):
         return candidate
     return None
 
@@ -107,9 +153,48 @@ def load_company_names(company_file: Path) -> list[str]:
 
 def pick_sheets(workbook):
     sheets = workbook.worksheets
-    if len(sheets) < 2:
-        raise RuntimeError("XLSX 至少需要两个 sheet")
-    return [sheets[1]] + [sheet for idx, sheet in enumerate(sheets) if idx != 1]
+    if not sheets:
+        raise RuntimeError("XLSX 没有任何 sheet")
+    return sheets
+
+
+def get_header_row(sheet) -> list[str]:
+    try:
+        first_row = next(sheet.iter_rows(min_row=1, max_row=1, values_only=True))
+    except StopIteration:
+        return []
+    return [normalize_for_match(value) for value in first_row]
+
+
+def find_header_index(headers: list[str], candidates: set[str]) -> int | None:
+    for index, header in enumerate(headers):
+        if header in candidates:
+            return index
+    return None
+
+
+def pick_target_columns(workbook) -> list[tuple[object, int, str]]:
+    primary = []
+    fallback = []
+
+    for sheet in pick_sheets(workbook):
+        headers = get_header_row(sheet)
+        domain_index = find_header_index(headers, TARGET_HEADER_NAMES)
+        if domain_index is not None:
+            primary.append((sheet, domain_index, headers[domain_index] or "域名"))
+            continue
+
+        fallback_index = find_header_index(headers, FALLBACK_HEADER_NAMES)
+        if fallback_index is not None:
+            fallback.append((sheet, fallback_index, headers[fallback_index] or "网址/链接"))
+
+    if primary:
+        return primary
+    if fallback:
+        return fallback
+
+    sheets = pick_sheets(workbook)
+    return [(sheet, 2, "第三列") for sheet in sheets]
 
 
 def find_latest_xlsx(base_dir: Path) -> Path | None:
@@ -126,16 +211,22 @@ def extract_targets_from_xlsx_file(xlsx_path: Path, company_file: Path, debug: b
     company_names = load_company_names(company_file)
     workbook = load_workbook(xlsx_path, read_only=False, data_only=True, keep_links=False)
     results = []
-    seen = set()
     try:
         if debug:
             print(f"XLSX: {xlsx_path}")
             print(f"公司名单: {company_file} ({len(company_names)} 条)")
             print(f"sheet: {workbook.sheetnames}")
 
-        for sheet in pick_sheets(workbook):
+        target_columns = pick_target_columns(workbook)
+        if debug:
+            print("提取列: " + ", ".join(
+                f"{sheet.title}.{column_name}(第{column_index + 1}列)"
+                for sheet, column_index, column_name in target_columns
+            ))
+
+        for sheet, target_column_index, column_name in target_columns:
             if debug:
-                print(f"\n扫描 sheet: {sheet.title}")
+                print(f"\n扫描 sheet: {sheet.title}，目标列: {column_name}(第{target_column_index + 1}列)")
 
             sheet_hits = 0
             scanned_rows = 0
@@ -167,30 +258,32 @@ def extract_targets_from_xlsx_file(xlsx_path: Path, company_file: Path, debug: b
                 if company_names and not matched_company:
                     continue
 
-                third_value = row[2] if len(row) >= 3 else None
-                if third_value is None:
+                target_value = row[target_column_index] if len(row) > target_column_index else None
+                if target_value is None:
                     continue
 
-                candidates = extract_targets_from_text(str(third_value))
+                candidates = extract_targets_from_text(str(target_value))
                 if not candidates:
                     if debug:
-                        print(f"  row={row_index} 命中单位={matched_company or '-'} 但第三列未提取到根域名: {third_value!r}")
+                        print(
+                            f"  row={row_index} 命中单位={matched_company or '-'} "
+                            f"但{column_name}未提取到英文根域名/IP: {target_value!r}"
+                        )
                     continue
 
                 sheet_hits += 1
                 if debug:
-                    print(f"  row={row_index} 命中单位={matched_company or '-'} 第三列={third_value!r} -> {candidates}")
+                    print(
+                        f"  row={row_index} 命中单位={matched_company or '-'} "
+                        f"{column_name}={target_value!r} -> {candidates}"
+                    )
 
                 for target in candidates:
-                    if target not in seen:
-                        seen.add(target)
-                        results.append(target)
+                    results.append(target)
 
             if debug:
                 print(f"sheet {sheet.title} 扫描行数: {scanned_rows} 命中行数: {sheet_hits}")
 
-            if results:
-                break
     finally:
         workbook.close()
 
