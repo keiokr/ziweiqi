@@ -24,6 +24,11 @@
 5.2：每次进行资产收集的时候会对上次的结果进行备份和清理。<br>
 <br>
 <img width="1575" height="1136" alt="image" src="https://github.com/user-attachments/assets/2b277656-da32-4b77-b223-7d3f6f693423" />
+<br><br>
+<img width="1393" height="778" alt="image" src="https://github.com/user-attachments/assets/91b0871a-22a6-4fd4-a55d-7b96894dc1fc" />
+<br><br><img width="1485" height="441" alt="image" src="https://github.com/user-attachments/assets/8467a681-90b2-4903-b57a-4db8f9620e9a" />
+
+<br>
 <br>
 5.3： 工信部批量查询备案资产（没有集成到软件里面，但可以手动批量），批量查询除开aiqicha，也可以使用工信部的ziweiqi/tools/ICP_Query/icpApi.py,大批量会封，已经做了二开，批量尽量不要超过99个。
 <br>
