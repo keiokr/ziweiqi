@@ -10,7 +10,7 @@
 2、OneForAll 兼容  Python 3.11.1<br>
 3、最终 IP/端口去重校验<br>
 4、修复masscan提示  Masscan 错误输出 为 Masscan 状态输出:<br>
-5、公网默认参数 -t 150 -time 4 改为 -t 200 -time 3<br>
+5、fscan端口扫描公网默认参数 -t 150 -time 4 改为 -t 200 -time 3<br>
 6、fscan 过程输出改写到 C:\Users\Administrator\Desktop\project\ziweiqi\ziweiqi\results\tmp\*.log<br>
 7、去掉 GUI 空闲超时输入和终止逻辑<br>
 
