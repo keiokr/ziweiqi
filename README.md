@@ -1,15 +1,15 @@
 # ziweiqi
 
-更新20260820
-1、帮助文案和注释准确性
-2、OneForAll 兼容  Python 3.11.1
-3、最终 IP/端口去重校验
-4、修复masscan提示  Masscan 错误输出 为 Masscan 状态输出:
-5、公网默认参数 -t 150 -time 4 改为 -t 200 -time 3
-6、fscan 过程输出改写到 C:\Users\Administrator\Desktop\project\ziweiqi\ziweiqi\results\tmp\*.log
-7、去掉 GUI 空闲超时输入和终止逻辑
+更新20260820<br>
+1、帮助文案和注释准确性<br>
+2、OneForAll 兼容  Python 3.11.1<br>
+3、最终 IP/端口去重校验<br>
+4、修复masscan提示  Masscan 错误输出 为 Masscan 状态输出:<br>
+5、公网默认参数 -t 150 -time 4 改为 -t 200 -time 3<br>
+6、fscan 过程输出改写到 C:\Users\Administrator\Desktop\project\ziweiqi\ziweiqi\results\tmp\*.log<br>
+7、去掉 GUI 空闲超时输入和终止逻辑<br>
 
-<img width="1580" height="1096" alt="image" src="https://github.com/user-attachments/assets/ddccc168-a4c3-4521-ae4e-b7fa568b01e0" />
+<img width="1580" height="1096" alt="image" src="https://github.com/user-attachments/assets/ddccc168-a4c3-4521-ae4e-b7fa568b01e0" /><br><br>
 
 
 1、工具描述：根据目标单位名称和备案域名ip进行资产信息收集工具，资产准确率99.9%
