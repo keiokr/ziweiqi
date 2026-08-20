@@ -1,11 +1,22 @@
 # ziweiqi
 
+更新20260820
+1、帮助文案和注释准确性
+2、OneForAll 兼容  Python 3.11.1
+3、最终 IP/端口去重校验
+4、修复masscan提示  Masscan 错误输出 为 Masscan 状态输出:
+5、公网默认参数 -t 150 -time 4 改为 -t 200 -time 3
+6、fscan 过程输出改写到 C:\Users\Administrator\Desktop\project\ziweiqi\ziweiqi\results\tmp\*.log
+7、去掉 GUI 空闲超时输入和终止逻辑
 
-1、工具描述：一款根据目标单位名称和备案域名ip进行资产信息收集工具，资产准确率99.9%
+<img width="1580" height="1096" alt="image" src="https://github.com/user-attachments/assets/ddccc168-a4c3-4521-ae4e-b7fa568b01e0" />
+
+
+1、工具描述：根据目标单位名称和备案域名ip进行资产信息收集工具，资产准确率99.9%
 <br><br><br>
 2、适用场景：护网比赛前期资产信息收集，单个/批量目标单位或备案域名资产的资产信息收集
 <br><br><br>
-3、运行环境：env 目录下一键安装点击 install_env.bat，如果运行环境有困难可以考虑使用 Windows Server 2022 Datacenter + python 3.9.11 
+3、运行环境：env 目录下一键安装点击 install_env.bat，最好先设置pip国内源，如果运行环境有困难可以考虑使用 Windows Server 2022 Datacenter + python 3.9.11 
 <br><br>
 <img width="1539" height="176" alt="image" src="https://github.com/user-attachments/assets/2b55ee3a-681c-4cc1-8c37-e12ce39bd82f" />
 <br><br>
