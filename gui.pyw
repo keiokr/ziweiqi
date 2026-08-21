@@ -7,6 +7,7 @@ import re
 import configparser
 import shutil
 import subprocess
+from typing import Optional
 import sys
 import threading
 import time
@@ -45,8 +46,7 @@ PIPELINE_MODE_LABELS = {
 }
 PIPELINE_LABEL_TO_MODE = {label: mode for mode, label in PIPELINE_MODE_LABELS.items()}
 
-
-def resolve_pipeline_mode(value: str) -> str | None:
+def resolve_pipeline_mode(value: str) -> Optional[str]:
     value = (value or "").strip()
     if value in PIPELINES:
         return value
